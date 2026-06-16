@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ディベートジャッジシート</title>
+<style>
+body{font-family:sans-serif;max-width:900px;margin:auto;padding:12px}
+.card{border:1px solid #ccc;border-radius:8px;padding:10px;margin:10px 0}
+label{display:inline-block;margin:4px 10px 4px 0}
+button{padding:10px 16px;font-size:16px}
+.score{font-size:1.2em;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>ディベートジャッジシート</h1>
+
+<div id="form"></div>
+<button onclick="calc()">集計する</button>
+<div id="result" style="margin-top:20px"></div>
+
+<script>
+const items = [
+  ["賛成派","理由1","affirmative"],
+  ["賛成派","理由2","affirmative"],
+  ["反対派","理由1","negative"],
+  ["反対派","理由2","negative"],
+  ["反対派の反論","項目1","negative"],
+  ["反対派の反論","項目2","negative"],
+  ["賛成派の反論","項目1","affirmative"],
+  ["賛成派の反論","項目2","affirmative"],
+  ["最終弁論","賛成派","affirmative"],
+  ["最終弁論","反対派","negative"]
+];
+
+const form = document.getElementById("form");
+
+items.forEach((item,i)=>{
+  const div=document.createElement("div");
+  div.className="card";
+
+  let options="";
+  if(item[2]==="affirmative"){
+    ["a","b","c","d"].forEach((v,idx)=>{
+      options += `<label><input type="radio" name="q${i}" value="${4-idx}">${v}</label>`;
+    });
+  } else {
+    ["d","c","b","a"].forEach((v,idx)=>{
+      options += `<label><input type="radio" name="q${i}" value="${idx+1}">${v}</label>`;
+    });
+  }
+
+  div.innerHTML=`<strong>${item[0]}</strong> ${item[1]}<br>${options}`;
+  form.appendChild(div);
+});
+
+function calc(){
+  let affirmative=0;
+  let negative=0;
+
+  items.forEach((item,i)=>{
+    const selected=document.querySelector(`input[name="q${i}"]:checked`);
+    if(!selected) return;
+
+    const score=Number(selected.value);
+    if(item[2]==="affirmative"){
+      affirmative += score;
+    } else {
+      negative += score;
+    }
+  });
+
+  const winner = affirmative>negative ? "🏆 賛成派" :
+                 negative>affirmative ? "🏆 反対派" :
+                 "引き分け";
+
+  document.getElementById("result").innerHTML =
+    `<div class="score">賛成派 ${affirmative}点</div>
+     <div class="score">反対派 ${negative}点</div>
+     <hr>
+     <div class="score">${winner}</div>`;
+}
+</script>
+</body>
+</html>
