@@ -4,23 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ディベートジャッジシート</title>
+
 <style>
-body{font-family:sans-serif;max-width:900px;margin:auto;padding:12px}
-.card{border:1px solid #ccc;border-radius:8px;padding:10px;margin:10px 0}
-label{display:inline-block;margin:4px 10px 4px 0}
-button{padding:10px 16px;font-size:16px}
-.score{font-size:1.2em;font-weight:bold}
+body{
+  font-family:sans-serif;
+  max-width:900px;
+  margin:auto;
+  padding:12px;
+}
+
+.card{
+  border:1px solid #ccc;
+  border-radius:8px;
+  padding:10px;
+  margin:10px 0;
+}
+
+label{
+  display:inline-block;
+  margin:4px 10px 4px 0;
+}
+
+button{
+  padding:10px 16px;
+  font-size:16px;
+  margin-right:10px;
+}
+
+.score{
+  font-size:1.2em;
+  font-weight:bold;
+}
 </style>
+
 </head>
 <body>
+
 <h1>ディベートジャッジシート</h1>
 
 <div id="form"></div>
+
 <button onclick="calc()">集計する</button>
 <button onclick="resetForm()">リセット</button>
+
 <div id="result" style="margin-top:20px"></div>
 
 <script>
+
 const items = [
   ["賛成派","理由1","affirmative"],
   ["賛成派","理由2","affirmative"],
@@ -37,43 +67,69 @@ const items = [
 const form = document.getElementById("form");
 
 items.forEach((item,i)=>{
-  const div=document.createElement("div");
-  div.className="card";
 
-  let options="";
-  if(item[2]==="affirmative"){
+  const div = document.createElement("div");
+  div.className = "card";
+
+  let options = "";
+
+  if(item[2] === "affirmative"){
+
     ["a","b","c","d"].forEach((v,idx)=>{
-      options += `<label><input type="radio" name="q${i}" value="${4-idx}">${v}</label>`;
+      options +=
+      `<label>
+        <input type="radio" name="q${i}" value="${4-idx}">
+        ${v}
+      </label>`;
     });
-  } else {
+
+  }else{
+
     ["d","c","b","a"].forEach((v,idx)=>{
-      options += `<label><input type="radio" name="q${i}" value="${idx+1}">${v}</label>`;
+      options +=
+      `<label>
+        <input type="radio" name="q${i}" value="${idx+1}">
+        ${v}
+      </label>`;
     });
+
   }
 
-  div.innerHTML=`<strong>${item[0]}</strong> ${item[1]}<br>${options}`;
+  div.innerHTML =
+    `<strong>${item[0]}</strong> ${item[1]}<br>${options}`;
+
   form.appendChild(div);
+
 });
 
 function calc(){
-  let affirmative=0;
-  let negative=0;
+
+  let affirmative = 0;
+  let negative = 0;
 
   items.forEach((item,i)=>{
-    const selected=document.querySelector(`input[name="q${i}"]:checked`);
+
+    const selected =
+      document.querySelector(`input[name="q${i}"]:checked`);
+
     if(!selected) return;
 
-    const score=Number(selected.value);
-    if(item[2]==="affirmative"){
+    const score = Number(selected.value);
+
+    if(item[2] === "affirmative"){
       affirmative += score;
-    } else {
+    }else{
       negative += score;
     }
+
   });
 
-  const winner = affirmative>negative ? "🏆 賛成派" :
-                 negative>affirmative ? "🏆 反対派" :
-                 "引き分け";
+  const winner =
+    affirmative > negative
+      ? "🏆 賛成派"
+      : negative > affirmative
+        ? "🏆 反対派"
+        : "引き分け";
 
   document.getElementById("result").innerHTML =
     `<div class="score">賛成派 ${affirmative}点</div>
@@ -81,29 +137,24 @@ function calc(){
      <hr>
      <div class="score">${winner}</div>`;
 }
-<button onclick="calc()">集計する</button>
-<button onclick="resetForm()">リセット</button></script>
-</body>
-</html>
-    const score=Number(selected.value);
-    if(item[2]==="affirmative"){
-      affirmative += score;
-    } else {
-      negative += score;
-    }
+
+function resetForm(){
+
+  if(!confirm("採点内容をすべて消しますか？")){
+    return;
+  }
+
+  const radios =
+    document.querySelectorAll('input[type="radio"]');
+
+  radios.forEach(r=>{
+    r.checked = false;
   });
 
-  const winner = affirmative>negative ? "🏆 賛成派" :
-                 negative>affirmative ? "🏆 反対派" :
-                 "引き分け";
-
-  document.getElementById("result").innerHTML =
-    `<div class="score">賛成派 ${affirmative}点</div>
-     <div class="score">反対派 ${negative}点</div>
-     <hr>
-     <div class="score">${winner}</div>`;
+  document.getElementById("result").innerHTML = "";
 }
-<button onclick="calc()">集計する</button>
-<button onclick="resetForm()">リセット</button></script>
+
+</script>
+
 </body>
 </html>
