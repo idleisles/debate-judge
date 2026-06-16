@@ -17,6 +17,7 @@ button{padding:10px 16px;font-size:16px}
 
 <div id="form"></div>
 <button onclick="calc()">集計する</button>
+<button onclick="resetForm()">リセット</button>
 <div id="result" style="margin-top:20px"></div>
 
 <script>
@@ -80,6 +81,7 @@ function calc(){
      <hr>
      <div class="score">${winner}</div>`;
 }
-</script>
+<button onclick="calc()">集計する</button>
+<button onclick="resetForm()">リセット</button></script>
 </body>
 </html>
