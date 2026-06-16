@@ -85,3 +85,25 @@ function calc(){
 <button onclick="resetForm()">リセット</button></script>
 </body>
 </html>
+    const score=Number(selected.value);
+    if(item[2]==="affirmative"){
+      affirmative += score;
+    } else {
+      negative += score;
+    }
+  });
+
+  const winner = affirmative>negative ? "🏆 賛成派" :
+                 negative>affirmative ? "🏆 反対派" :
+                 "引き分け";
+
+  document.getElementById("result").innerHTML =
+    `<div class="score">賛成派 ${affirmative}点</div>
+     <div class="score">反対派 ${negative}点</div>
+     <hr>
+     <div class="score">${winner}</div>`;
+}
+<button onclick="calc()">集計する</button>
+<button onclick="resetForm()">リセット</button></script>
+</body>
+</html>
